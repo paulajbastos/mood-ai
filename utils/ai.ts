@@ -1,6 +1,9 @@
 import { PromptTemplate } from '@langchain/core/prompts';
 import { ChatOpenAI } from '@langchain/openai';
-import { StructuredOutputParser } from 'langchain/output_parsers';
+import {
+  StructuredOutputParser,
+  OutputFixingParser,
+} from 'langchain/output_parsers';
 import z from 'zod';
 
 const parser = StructuredOutputParser.fromZodSchema(
@@ -45,13 +48,15 @@ const getPrompt = async (content: string) => {
   return input;
 };
 
-export const analyze = async (entry: any) => {
-  console.log('entry', entry);
+export const analyze = async (entry: string) => {
+  const input = await getPrompt(entry);
 
-  const input = await getPrompt(entry.content);
   const model = new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' });
   const output = await model.invoke(input);
 
-  console.log(input);
-  console.log(output);
+  try {
+    return parser.parse(output.content);
+  } catch (e) {
+    console.log('analyze error', e);
+  }
 };

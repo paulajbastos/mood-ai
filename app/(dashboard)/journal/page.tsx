@@ -23,9 +23,11 @@ const getEntries = async () => {
     },
   });
 
-  await analyze({
-    content: `Today was a really good day. I finally was able to grab that pair of shoes I have been' dying to get`,
-  });
+  console.log(
+    await analyze(
+      `Today was a really good day. I finally was able to grab that pair of shoes I have been' dying to get`
+    )
+  );
 
   // await analyze(
   //   `I'm going to give you an journal entry and I want you to analyze for a few things: i want the mood, the summary, what the subject is, and a color representing the mood. You need to respond back with a formatted JSON list like so: { "mood": "", "summary": "", "subject": "", "color": "", "negative": ""}.
