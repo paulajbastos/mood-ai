@@ -1,6 +1,7 @@
 'use client';
-import { updateEntry } from '@/utils/api';
+import { updateEntry, deleteEntry } from '@/utils/api';
 import { useState } from 'react';
+import { useAutosave } from 'react-autosave';
 import Spinner from './Spinner';
 import { useRouter } from 'next/navigation';
 import { Prisma } from '@prisma/client';
@@ -17,14 +18,31 @@ const Editor = ({ entry }: PostCreateBody) => {
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
-  const saveDataToServer = async () => {
-    console.log(`Saving: ${text}`);
-    setIsSaving(true);
-    const { data } = await updateEntry(entry.id, { content: text });
-    setEntry(data);
-    setIsSaving(false);
-    console.log(`Saved: ${text}`);
+  const handleDelete = async () => {
+    await deleteEntry(entry.id);
+    router.push('/journal');
   };
+  useAutosave({
+    data: text,
+    onSave: async (_text) => {
+      if (_text === entry.content) return;
+      setIsSaving(true);
+
+      const { data } = await updateEntry(entry.id, { content: _text });
+
+      setEntry(data);
+      setIsSaving(false);
+    },
+  });
+
+  // const saveDataToServer = async () => {
+  //   console.log(`Saving: ${text}`);
+  //   setIsSaving(true);
+  //   const { data } = await updateEntry(entry.id, { content: text });
+  //   setEntry(data);
+  //   setIsSaving(false);
+  //   console.log(`Saved: ${text}`);
+  // };
 
   return (
     <div className="w-full h-full grid grid-cols-3 gap-0 relative">
@@ -39,25 +57,50 @@ const Editor = ({ entry }: PostCreateBody) => {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="w-full text-xl p-8"
+          className="w-full h-full text-xl p-8"
         />
-        <div
-          className="cursor-pointer overflow-hidden rounded-lg bg-white shadow"
-          onClick={saveDataToServer}
-        >
-          <div className="px-4 py-5 sm:p-6">
-            <span className="text-3xl">Save</span>
-          </div>
-        </div>
       </div>
-      {/* <div className="border-l border-black/5">
+      <div className="border-l border-black/5">
         <div
-          style={{ background: currentEntry.analysis.color }}
+          style={{
+            background: currentEntry.analysis?.color
+              ? currentEntry.analysis.color
+              : '',
+          }}
           className="h-[100px] bg-blue-600 text-white p-8"
         >
           <h2 className="text-2xl bg-white/25 text-black">Analysis</h2>
         </div>
-      </div> */}
+        <div>
+          <ul role="list" className="divide-y divide-gray-200">
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold w-1/3">Subject</div>
+              <div className="text-xl">{currentEntry.analysis?.subject}</div>
+            </li>
+
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold">Mood</div>
+              <div className="text-xl">{currentEntry.analysis?.mood}</div>
+            </li>
+
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold">Negative</div>
+              <div className="text-xl">
+                {currentEntry.analysis?.negative ? 'True' : 'False'}
+              </div>
+            </li>
+            <li className="py-4 px-8 flex items-center justify-between">
+              <button
+                onClick={handleDelete}
+                type="button"
+                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              >
+                Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
