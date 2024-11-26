@@ -8,6 +8,7 @@ import NewEntry from '@/components/NewEntry';
 import { getUserFromClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
 import Link from 'next/link';
+import Question from '@/components/Question';
 
 const getEntries = async () => {
   const user = await getUserFromClerkID();
@@ -33,7 +34,9 @@ const JournalPage = async (): Promise<JSX.Element | null> => {
   return (
     <div className="px-6 py-8 bg-zinc-100/50 h-full">
       <h1 className="text-4xl mb-12">Journals</h1>
-      <div className="my-8">{/* <Question /> */}</div>
+      <div className="my-8">
+        <Question />
+      </div>
       <div className="grid grid-cols-3 gap-4">
         <NewEntry />
         {entries.map((entry) => (

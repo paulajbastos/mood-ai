@@ -40,10 +40,25 @@ export const updateEntry = async (id: string, updates: PostCreateBody) => {
   }
 };
 
-export const deleteEntry = async (id) => {
+export const deleteEntry = async (id: string) => {
   const res = await fetch(
     new Request(createURL(`/api/journal/${id}`), {
       method: 'DELETE',
+    })
+  );
+
+  if (res.ok) {
+    return res.json();
+  } else {
+    throw new Error('Something went wrong on API server!');
+  }
+};
+
+export const askQuestion = async (question) => {
+  const res = await fetch(
+    new Request(createURL(`/api/question`), {
+      method: 'POST',
+      body: JSON.stringify({ question }),
     })
   );
 
