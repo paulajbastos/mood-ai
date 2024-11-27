@@ -26,8 +26,9 @@ interface Params {
   id: string;
 }
 
-const JournalEditorPage = async ({ params }: { params: Params }) => {
-  const entry = await getEntry(params.id);
+const JournalEditorPage = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params; // Await the promise
+  const entry = await getEntry(resolvedParams.id);
 
   return (
     <div className="w-full h-full">
