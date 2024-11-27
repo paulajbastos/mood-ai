@@ -32,18 +32,3 @@ module.exports = {
     ],
   },
 };
-
-// {
-//   "extends": ["next/core-web-vitals", "prettier"],
-//   "plugins": ["prettier", "simple-import-sort"],
-//   "rules": {
-//     "prettier/prettier": ["error"],
-//     "simple-import-sort/exports": "error",
-//     "simple-import-sort/imports": [
-//       "error",
-//       {
-//         "groups": [["^@?\\w"], ["^\\."]]
-//       }
-//     ]
-//   }
-// }
