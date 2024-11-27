@@ -1,4 +1,4 @@
-import { TJournalEntryProps } from './Editor';
+import { TJournalEntryProps } from '@/types/prisma';
 
 const EntryCard = ({ entry }: TJournalEntryProps) => {
   const date = new Date(entry.createdAt).toDateString();

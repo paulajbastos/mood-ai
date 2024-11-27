@@ -10,7 +10,7 @@ export const newEntry = async () => {
     new Request(createURL('/api/journal'), {
       method: 'POST',
       // body: JSON.stringify({ content: 'new entry' }),
-    })
+    }),
   );
 
   if (res.ok) {
@@ -30,7 +30,7 @@ export const updateEntry = async (id: string, updates: PostCreateBody) => {
     new Request(createURL(`/api/journal/${id}`), {
       method: 'PATCH',
       body: JSON.stringify({ updates }),
-    })
+    }),
   );
 
   if (res.ok) {
@@ -44,7 +44,7 @@ export const deleteEntry = async (id: string) => {
   const res = await fetch(
     new Request(createURL(`/api/journal/${id}`), {
       method: 'DELETE',
-    })
+    }),
   );
 
   if (res.ok) {
@@ -54,12 +54,12 @@ export const deleteEntry = async (id: string) => {
   }
 };
 
-export const askQuestion = async (question) => {
+export const askQuestion = async (question: string) => {
   const res = await fetch(
     new Request(createURL(`/api/question`), {
       method: 'POST',
       body: JSON.stringify({ question }),
-    })
+    }),
   );
 
   if (res.ok) {

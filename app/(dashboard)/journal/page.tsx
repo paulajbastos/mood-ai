@@ -1,8 +1,3 @@
-// import EntryCard from '@/components/EntryCard';
-// import NewEntry from '@/components/NewEntry';
-// import Question from '@/components/Question';
-// import { qa } from '@/util/ai';
-import { JSX } from 'react';
 import Link from 'next/link';
 
 import { getUserFromClerkID } from '@/utils/auth';
@@ -28,7 +23,7 @@ const getEntries = async () => {
   return data;
 };
 
-const JournalPage = async (): Promise<JSX.Element | null> => {
+const JournalPage = async () => {
   const entries = await getEntries();
 
   return (

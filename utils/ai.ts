@@ -5,9 +5,11 @@ import { loadQARefineChain } from 'langchain/chains';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import {
   StructuredOutputParser,
-  OutputFixingParser,
+  // OutputFixingParser,
 } from 'langchain/output_parsers';
 import z from 'zod';
+
+import { TJournalEntryProps } from '@/types/prisma';
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -18,20 +20,20 @@ const parser = StructuredOutputParser.fromZodSchema(
     negative: z
       .boolean()
       .describe(
-        'is the journal entry negative? (i.e. does it contain negative emotions?).'
+        'is the journal entry negative? (i.e. does it contain negative emotions?).',
       ),
     summary: z.string().describe('quick summary of the entire entry.'),
     color: z
       .string()
       .describe(
-        'a hexidecimal color code that represents the mood of the entry. Example #0101fe for blue representing happiness.'
+        'a hexidecimal color code that represents the mood of the entry. Example #0101fe for blue representing happiness.',
       ),
     sentimentScore: z
       .number()
       .describe(
-        'sentiment of the text and rated on a scale from -10 to 10, where -10 is extremely negative, 0 is neutral, and 10 is extremely positive.'
+        'sentiment of the text and rated on a scale from -10 to 10, where -10 is extremely negative, 0 is neutral, and 10 is extremely positive.',
       ),
-  })
+  }),
 );
 
 const getPrompt = async (content: string) => {
@@ -64,9 +66,8 @@ export const analyze = async (entry: string) => {
     // console.log('output.content', output.content);
     // console.log(parser.parse(output.content));
     return parser.parse(output.content.toString());
-  } catch (e) {
-    console.log('analyze error', e);
-
+  } catch {
+    // console.log('analyze error', e);
     // const fixParser = OutputFixingParser.fromLLM(
     //   new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' }),
     //   parser
@@ -79,13 +80,13 @@ export const analyze = async (entry: string) => {
   // console.log(output);
 };
 
-export const qa = async (question: string, entries) => {
+export const qa = async (question: string, entries: TJournalEntryProps[]) => {
   const docs = entries.map(
     (entry) =>
       new Document({
         pageContent: entry.content,
         metadata: { source: entry.id, date: entry.createdAt },
-      })
+      }),
   );
   const model = new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' });
   // combine documents by doing a first pass and then refining on more documents

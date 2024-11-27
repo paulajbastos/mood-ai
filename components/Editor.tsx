@@ -3,17 +3,11 @@
 import { useState } from 'react';
 import { useAutosave } from 'react-autosave';
 import { useRouter } from 'next/navigation';
-import { Prisma } from '@prisma/client';
 
 import { updateEntry, deleteEntry } from '@/utils/api';
-import { prisma } from '@/utils/db';
 
+import { TJournalEntryProps } from '@/types/prisma';
 import Spinner from './Spinner';
-
-export type TJournalEntryProps = Prisma.Args<
-  (typeof prisma.journalEntry)[],
-  'update' | 'delete'
->['data'];
 
 const Editor = ({ entry }: TJournalEntryProps) => {
   const [text, setText] = useState(entry.content);
