@@ -27,7 +27,6 @@ export const POST = async () => {
     },
   });
 
-  // update(['/journal']);
   revalidatePath('/journal');
 
   return NextResponse.json({ data: entry });

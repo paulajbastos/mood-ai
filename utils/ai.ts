@@ -54,17 +54,11 @@ const getPrompt = async (content: string) => {
 };
 
 export const analyze = async (entry: string) => {
-  // console.log('entry', entry);
-
   const input = await getPrompt(entry);
-  // console.log('input', input);
-
   const model = new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' });
   const output = await model.invoke(input);
 
   try {
-    // console.log('output.content', output.content);
-    // console.log(parser.parse(output.content));
     return parser.parse(output.content.toString());
   } catch {
     // console.log('analyze error', e);
@@ -75,9 +69,6 @@ export const analyze = async (entry: string) => {
     // const fix = await fixParser.parse(output.content);
     // return fix;
   }
-
-  // console.log(input);
-  // console.log(output);
 };
 
 export const qa = async (question: string, entries: TJournalEntryProps[]) => {

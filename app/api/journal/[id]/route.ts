@@ -10,7 +10,7 @@ interface Params {
 
 export const DELETE = async (
   request: Request,
-  { params }: { params: Params }
+  { params }: { params: Params },
 ) => {
   const user = await getUserFromClerkID();
   if (!user) return;
@@ -23,15 +23,13 @@ export const DELETE = async (
     },
   });
 
-  // update(['/journal']);
-
   return NextResponse.json({ data: { id: params.id } });
 };
 
 // PATCH is similar to PUT, but the request contains only the data to be updated, not the complete resource.
 export const PATCH = async (
   request: Request,
-  { params }: { params: Params }
+  { params }: { params: Params },
 ) => {
   const { updates } = await request.json();
   const user = await getUserFromClerkID();
@@ -67,8 +65,6 @@ export const PATCH = async (
       sentimentScore: analysis?.sentimentScore || 0,
     },
   });
-
-  // update(['/journal']);
 
   return NextResponse.json({ data: { ...entry, analysis: savedAnalysis } });
 };
