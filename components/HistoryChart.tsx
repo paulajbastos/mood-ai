@@ -7,13 +7,12 @@ type THistoryChartProps = {
 };
 
 type TCustomTooltipProps = {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   payload: any;
   label: string;
   active: boolean;
 };
 const CustomTooltip = ({ payload, label, active }: TCustomTooltipProps) => {
-  console.log(payload, label, active);
-
   const dateLabel = new Date(label).toLocaleString('en-us', {
     weekday: 'long',
     year: 'numeric',

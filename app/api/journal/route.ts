@@ -1,29 +1,18 @@
-// import { update } from '@/utils/actions';
-// import { analyze } from '@/utils/ai';
-import { getUserFromClerkID } from '@/utils/auth';
-import { prisma } from '@/utils/db';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
-// export const POST = async (request: Request) => {
-export const POST = async () => {
-  // const data = await request.json();
-  const user = await getUserFromClerkID();
+import { getUserFromClerkID } from '@/utils/auth';
+import { prisma } from '@/utils/db';
 
-  console.log('user', user);
+export const POST = async () => {
+  const user = await getUserFromClerkID();
 
   if (!user) return;
 
   const entry = await prisma.journalEntry.create({
     data: {
-      // content: data.content,
       userId: user.id,
       content: 'Write your content here',
-      // user: {
-      //   connect: {
-      //     id: user?.id,
-      //   },
-      // },
       analysis: {
         create: {
           mood: 'Neutral',

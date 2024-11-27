@@ -1,27 +1,26 @@
 'use client';
-import { updateEntry, deleteEntry } from '@/utils/api';
+
 import { useState } from 'react';
 import { useAutosave } from 'react-autosave';
-import Spinner from './Spinner';
 import { useRouter } from 'next/navigation';
 import { Prisma } from '@prisma/client';
+
+import { updateEntry, deleteEntry } from '@/utils/api';
 import { prisma } from '@/utils/db';
 
-type PostCreateBody = Prisma.Args<
+import Spinner from './Spinner';
+
+export type TJournalEntryProps = Prisma.Args<
   (typeof prisma.journalEntry)[],
-  'update'
+  'update' | 'delete'
 >['data'];
 
-const Editor = ({ entry }: PostCreateBody) => {
+const Editor = ({ entry }: TJournalEntryProps) => {
   const [text, setText] = useState(entry.content);
   const [currentEntry, setEntry] = useState(entry);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
-  const handleDelete = async () => {
-    await deleteEntry(entry.id);
-    router.push('/journal');
-  };
   useAutosave({
     data: text,
     onSave: async (_text) => {
@@ -35,14 +34,10 @@ const Editor = ({ entry }: PostCreateBody) => {
     },
   });
 
-  // const saveDataToServer = async () => {
-  //   console.log(`Saving: ${text}`);
-  //   setIsSaving(true);
-  //   const { data } = await updateEntry(entry.id, { content: text });
-  //   setEntry(data);
-  //   setIsSaving(false);
-  //   console.log(`Saved: ${text}`);
-  // };
+  const handleDelete = async () => {
+    await deleteEntry(entry.id);
+    router.push('/journal');
+  };
 
   return (
     <div className="w-full h-full grid grid-cols-3 gap-0 relative">

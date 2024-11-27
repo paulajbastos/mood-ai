@@ -3,11 +3,13 @@
 // import Question from '@/components/Question';
 // import { qa } from '@/util/ai';
 import { JSX } from 'react';
-import EntryCard from '@/components/EntryCard';
-import NewEntry from '@/components/NewEntry';
+import Link from 'next/link';
+
 import { getUserFromClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
-import Link from 'next/link';
+
+import EntryCard from '@/components/EntryCard';
+import NewEntry from '@/components/NewEntry';
 import Question from '@/components/Question';
 
 const getEntries = async () => {
@@ -27,9 +29,7 @@ const getEntries = async () => {
 };
 
 const JournalPage = async (): Promise<JSX.Element | null> => {
-  // const JournalPage = async () => {
   const entries = await getEntries();
-  // console.log('entries', entries);
 
   return (
     <div className="px-6 py-8 bg-zinc-100/50 h-full">

@@ -1,9 +1,7 @@
 'use client';
 
-import { newEntry } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-// import { newEntry } from '@/utils/api';
-// import { revalidatePath } from 'next/cache';
+import { newEntry } from '@/utils/api';
 
 const NewEntry = () => {
   const router = useRouter();

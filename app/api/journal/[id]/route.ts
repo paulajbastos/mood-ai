@@ -1,7 +1,8 @@
+import { NextResponse } from 'next/server';
+
 import { analyze } from '@/utils/ai';
 import { getUserFromClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
-import { NextResponse } from 'next/server';
 
 interface Params {
   id: string;
@@ -46,16 +47,24 @@ export const PATCH = async (
     data: updates,
   });
 
+  if (!entry) return null;
+
   const analysis = await analyze(entry.content);
+
   const savedAnalysis = await prisma.entryAnalysis.upsert({
     where: {
       entryId: entry.id,
     },
     update: { ...analysis },
     create: {
-      entryId: entry?.id,
-      userId: user?.id,
-      ...analysis,
+      entryId: entry.id,
+      userId: user.id,
+      mood: analysis?.mood || '',
+      subject: analysis?.subject || '',
+      negative: analysis?.negative || false,
+      summary: analysis?.summary || '',
+      color: analysis?.color || '',
+      sentimentScore: analysis?.sentimentScore || 0,
     },
   });
 

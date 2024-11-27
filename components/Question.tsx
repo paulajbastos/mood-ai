@@ -1,7 +1,7 @@
 'use client';
 
-import { askQuestion } from '@/utils/api';
 import { useState, FormEvent } from 'react';
+import { askQuestion } from '@/utils/api';
 
 const Question = () => {
   const [question, setQuestion] = useState('');

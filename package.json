@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "is-ci || husky",
+    "typecheck": "tsc --noEmit --pretty"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.4.0",
@@ -36,6 +38,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "prisma": "^5.22.0"
   }
 }

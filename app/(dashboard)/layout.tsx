@@ -1,5 +1,5 @@
-import { UserButton } from '@clerk/nextjs';
 import { PropsWithChildren } from 'react';
+import { UserButton } from '@clerk/nextjs';
 
 import Link from 'next/link';
 

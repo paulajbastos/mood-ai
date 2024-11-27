@@ -1,6 +1,7 @@
-import Editor from '@/components/Editor';
 import { getUserFromClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
+
+import Editor from '@/components/Editor';
 
 const getEntry = async (id: string) => {
   const user = await getUserFromClerkID();
@@ -27,8 +28,6 @@ interface Params {
 
 const JournalEditorPage = async ({ params }: { params: Params }) => {
   const entry = await getEntry(params.id);
-
-  console.log('entry', entry);
 
   return (
     <div className="w-full h-full">

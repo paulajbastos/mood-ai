@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
+
 import Home from '../app/page';
 
 vi.mock('@clerk/nextjs/server', () => {
