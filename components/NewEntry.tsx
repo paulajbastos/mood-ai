@@ -13,7 +13,7 @@ const NewEntry = () => {
 
   return (
     <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-white shadow"
+      className="cursor-pointer overflow-hidden rounded-lg bg-blue-200  shadow"
       onClick={handleOnClick}
     >
       <div className="px-4 py-5 sm:p-6">

@@ -11,7 +11,7 @@ import z from 'zod';
 
 import { TJournalEntryProps } from '@/types/prisma';
 
-const parser = StructuredOutputParser.fromZodSchema(
+export const parser = StructuredOutputParser.fromZodSchema(
   z.object({
     mood: z
       .string()
@@ -36,7 +36,7 @@ const parser = StructuredOutputParser.fromZodSchema(
   }),
 );
 
-const getPrompt = async (content: string) => {
+export const getPrompt = async (content: string) => {
   const format_instructions = parser.getFormatInstructions();
 
   const prompt = new PromptTemplate({

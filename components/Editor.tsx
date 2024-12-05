@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAutosave } from 'react-autosave';
 import { useRouter } from 'next/navigation';
+import MDEditor from '@uiw/react-md-editor';
 
 import { updateEntry, deleteEntry } from '@/utils/api';
 
@@ -34,7 +35,7 @@ const Editor = ({ entry }: TJournalEntryProps) => {
   };
 
   return (
-    <div className="w-full h-full grid grid-cols-3 gap-0 relative">
+    <div className="w-full h-full flex-gap-0 relative">
       <div className="absolute left-0 top-0 p-2">
         {isSaving ? (
           <Spinner />
@@ -42,14 +43,16 @@ const Editor = ({ entry }: TJournalEntryProps) => {
           <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>
         )}
       </div>
-      <div className="col-span-2">
-        <textarea
+      <div className="col-span-4 h-full">
+        <MDEditor value={text} onChange={setText} className="!h-full" />
+        {/* <MDEditor.Markdown source={text} style={{ whiteSpace: 'pre-wrap' }} /> */}
+        {/* <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="w-full h-full text-xl p-8"
-        />
+        /> */}
       </div>
-      <div className="border-l border-black/5">
+      {/* <div className="border-l border-black/5">
         <div
           style={{
             background: currentEntry.analysis?.color
@@ -89,7 +92,7 @@ const Editor = ({ entry }: TJournalEntryProps) => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
