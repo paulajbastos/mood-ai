@@ -31,7 +31,7 @@ const CustomTooltip = ({ payload, label, active }: TCustomTooltipProps) => {
           style={{ background: analysis.color }}
         ></div>
         <p className="label text-sm text-black/30">{dateLabel}</p>
-        <p className="intro text-xl uppercase">{analysis.mood}</p>
+        <p className="intro text-xl uppercase">{analysis.type}</p>
       </div>
     );
   }

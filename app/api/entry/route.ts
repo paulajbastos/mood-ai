@@ -15,11 +15,10 @@ export const POST = async () => {
       content: 'Write your content here',
       analysis: {
         create: {
-          mood: 'Neutral',
+          type: 'Typescript',
+          projectName: 'WorkAndCo',
           subject: 'None',
-          negative: false,
           summary: 'None',
-          sentimentScore: 0,
           color: '#0101fe',
           userId: user.id,
         },

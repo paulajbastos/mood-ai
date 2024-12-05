@@ -57,12 +57,11 @@ export const PATCH = async (
     create: {
       entryId: entry.id,
       userId: user.id,
-      mood: analysis?.mood || '',
+      type: analysis?.type || '',
+      projectName: analysis?.projectName || '',
       subject: analysis?.subject || '',
-      negative: analysis?.negative || false,
       summary: analysis?.summary || '',
       color: analysis?.color || '',
-      sentimentScore: analysis?.sentimentScore || 0,
     },
   });
 

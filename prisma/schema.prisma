@@ -22,7 +22,7 @@ model User {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
   account   Account?
-  entries   entry[]
+  entries   Entry[]
   analysis  EntryAnalysis[]
 }
 
@@ -35,7 +35,7 @@ model Account {
   @@unique([userId])
 }
 
-model entry {
+model Entry {
   id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
@@ -54,17 +54,16 @@ model EntryAnalysis {
   updatedAt DateTime @updatedAt
 
   entryId String
-  entry   entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  entry   Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  mood           String  @db.Text
-  subject        String  @db.Text
-  negative       Boolean
-  summary        String  @db.Text
-  color          String  @default("#0101fe") @db.Text
-  sentimentScore Float
+  type        String @db.Text
+  projectName String @db.Text
+  subject     String @db.Text
+  summary     String @db.Text
+  color       String @default("#0101fe") @db.Text
 
   @@unique([entryId])
   @@index([userId])

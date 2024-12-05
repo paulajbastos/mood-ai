@@ -13,25 +13,22 @@ import { TEntryProps } from '@/types/prisma';
 
 export const parser = StructuredOutputParser.fromZodSchema(
   z.object({
-    mood: z
+    type: z
       .string()
-      .describe('the mood of the person who wrote the journal entry.'),
-    subject: z.string().describe('the subject of the journal entry.'),
-    negative: z
-      .boolean()
       .describe(
-        'is the journal entry negative? (i.e. does it contain negative emotions?).',
+        'the type of the content based on activity entry. For example: Css, Typescript, Python, Javascript. If not, try to solve it, do your best!',
       ),
-    summary: z.string().describe('quick summary of the entire entry.'),
+    projectName: z
+      .string()
+      .describe(
+        'the name of the project if there is one on activity entry. If not, it can be n/a',
+      ),
+    subject: z.string().describe('the subject of the activity entry.'),
+    summary: z.string().describe('quick summary of the entire activity entry.'),
     color: z
       .string()
       .describe(
-        'a hexidecimal color code that represents the mood of the entry. Example #0101fe for blue representing happiness.',
-      ),
-    sentimentScore: z
-      .number()
-      .describe(
-        'sentiment of the text and rated on a scale from -10 to 10, where -10 is extremely negative, 0 is neutral, and 10 is extremely positive.',
+        'a hexidecimal color code that represents the type of activity based on github repo-language-color of the repository. Example #3178c6 representing Typescript and #663399 for CSS.',
       ),
   }),
 );
@@ -41,7 +38,7 @@ export const getPrompt = async (content: string) => {
 
   const prompt = new PromptTemplate({
     template:
-      'Analyze the following journal entry. Follow the instructions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
+      'Analyze the following activity entry. Follow the instructions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
     inputVariables: ['entry'],
     partialVariables: { format_instructions },
   });
@@ -61,7 +58,7 @@ export const analyze = async (entry: string) => {
   try {
     return parser.parse(output.content.toString());
   } catch {
-    // console.log('analyze error', e);
+    console.log('analyze error', e);
     // const fixParser = OutputFixingParser.fromLLM(
     //   new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' }),
     //   parser

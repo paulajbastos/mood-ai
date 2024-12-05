@@ -7,14 +7,14 @@ import MDEditor from '@uiw/react-md-editor';
 
 import { updateEntry, deleteEntry } from '@/utils/api';
 
-import { TEntryProps } from '@/types/prisma';
+import { TEntryAnalysisProps, TEntryProps } from '@/types/prisma';
 import Spinner from './Spinner';
 
 const Editor = ({ entry }: TEntryProps) => {
   const [text, setText] = useState(entry.content);
-  const [currentEntry, setEntry] = useState(entry);
+  const [currentEntry, setEntry] = useState<TEntryAnalysisProps>(entry);
   const [isSaving, setIsSaving] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useAutosave({
     data: text,
@@ -29,10 +29,12 @@ const Editor = ({ entry }: TEntryProps) => {
     },
   });
 
-  const handleDelete = async () => {
-    await deleteEntry(entry.id);
-    router.push('/entry');
-  };
+  // const handleDelete = async () => {
+  //   await deleteEntry(entry.id);
+  //   router.push('/entry');
+  // };
+
+  const typeColorClass = `bg-[${currentEntry.analysis?.color}]`;
 
   return (
     <div className="w-full h-full flex-gap-0 relative">
@@ -43,9 +45,44 @@ const Editor = ({ entry }: TEntryProps) => {
           <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>
         )}
       </div>
-      <div className="col-span-4 h-full">
+      <div className="col-span-4 ">
+        <div className="pb-[40px]">
+          <ul role="list" className="divide-y divide-gray-200">
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold">Project</div>
+              <div className="text-xl">
+                {currentEntry.analysis?.projectName}
+              </div>
+            </li>
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold">Type</div>
+              <div className="flex text-xl">
+                <div
+                  className={`${typeColorClass} w-[16px] h-[16px] rounded-full`}
+                ></div>
+                {currentEntry.analysis?.type}
+              </div>
+            </li>
+            <li className="py-4 px-8 flex items-center justify-between">
+              <div className="text-xl font-semibold w-1/3">Subject</div>
+              <div className="text-xl">{currentEntry.analysis?.subject}</div>
+            </li>
+            {/* <li className="py-4 px-8 flex items-center justify-between">
+              <button
+                onClick={handleDelete}
+                type="button"
+                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              >
+                Delete
+              </button>
+            </li> */}
+          </ul>
+        </div>
         <MDEditor value={text} onChange={setText} className="!h-full" />
-        {/* <MDEditor.Markdown source={text} style={{ whiteSpace: 'pre-wrap' }} /> */}
+        {/* <MDEditor.Markdown
+          source={currentEntry}
+          style={{ whiteSpace: 'pre-wrap' }}
+        /> */}
         {/* <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const links = [
   { name: 'Activities', href: '/entry' },
-  { name: 'History', href: '/history' },
+  // { name: 'History', href: '/history' },
 ];
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
