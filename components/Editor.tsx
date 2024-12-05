@@ -7,10 +7,10 @@ import MDEditor from '@uiw/react-md-editor';
 
 import { updateEntry, deleteEntry } from '@/utils/api';
 
-import { TJournalEntryProps } from '@/types/prisma';
+import { TEntryProps } from '@/types/prisma';
 import Spinner from './Spinner';
 
-const Editor = ({ entry }: TJournalEntryProps) => {
+const Editor = ({ entry }: TEntryProps) => {
   const [text, setText] = useState(entry.content);
   const [currentEntry, setEntry] = useState(entry);
   const [isSaving, setIsSaving] = useState(false);
@@ -31,7 +31,7 @@ const Editor = ({ entry }: TJournalEntryProps) => {
 
   const handleDelete = async () => {
     await deleteEntry(entry.id);
-    router.push('/journal');
+    router.push('/entry');
   };
 
   return (

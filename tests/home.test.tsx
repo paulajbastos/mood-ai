@@ -8,7 +8,7 @@ vi.mock('@clerk/nextjs/server', () => {
   const mockedFunctions = {
     auth: () =>
       new Promise((resolve) =>
-        resolve({ userId: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC' })
+        resolve({ userId: 'user_2NNEqL2nrIRdJ194ndJqAHwEfxC' }),
       ),
     ClerkProvider: ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
@@ -33,5 +33,5 @@ vi.mock('next/font/google', () => {
 
 test(`Home`, async () => {
   render(await Home());
-  expect(screen.getByText('The best Journal app, period.')).toBeTruthy();
+  expect(screen.getByText('The best Activities app.')).toBeTruthy();
 });

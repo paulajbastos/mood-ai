@@ -1,6 +1,6 @@
-import { TJournalEntryProps } from '@/types/prisma';
+import { TEntryProps } from '@/types/prisma';
 
-const EntryCard = ({ entry }: TJournalEntryProps) => {
+const EntryCard = ({ entry }: TEntryProps) => {
   const date = new Date(entry.createdAt).toDateString();
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">

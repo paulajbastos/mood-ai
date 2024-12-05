@@ -9,7 +9,7 @@ import {
 } from 'langchain/output_parsers';
 import z from 'zod';
 
-import { TJournalEntryProps } from '@/types/prisma';
+import { TEntryProps } from '@/types/prisma';
 
 export const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -71,7 +71,7 @@ export const analyze = async (entry: string) => {
   }
 };
 
-export const qa = async (question: string, entries: TJournalEntryProps[]) => {
+export const qa = async (question: string, entries: TEntryProps[]) => {
   const docs = entries.map(
     (entry) =>
       new Document({

@@ -14,7 +14,7 @@ export const DELETE = async (
 ) => {
   const user = await getUserFromClerkID();
   if (!user) return;
-  await prisma.journalEntry.delete({
+  await prisma.entry.delete({
     where: {
       userId_id: {
         id: params.id,
@@ -35,7 +35,7 @@ export const PATCH = async (
   const user = await getUserFromClerkID();
   if (!user) return;
 
-  const entry = await prisma.journalEntry.update({
+  const entry = await prisma.entry.update({
     where: {
       userId_id: {
         id: params.id,

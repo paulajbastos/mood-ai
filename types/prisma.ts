@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 
 import { prisma } from '@/utils/db';
 
-export type TJournalEntryProps = Prisma.Args<
-  (typeof prisma.journalEntry)[],
+export type TEntryProps = Prisma.Args<
+  (typeof prisma.entry)[],
   'update' | 'delete' | 'findMany'
 >['data'];

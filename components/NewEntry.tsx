@@ -8,7 +8,7 @@ const NewEntry = () => {
 
   const handleOnClick = async () => {
     const { data } = await newEntry();
-    router.push(`/journal/${data.id}`);
+    router.push(`/entry/${data.id}`);
   };
 
   return (

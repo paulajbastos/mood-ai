@@ -7,7 +7,7 @@ const getEntry = async (id: string) => {
   const user = await getUserFromClerkID();
   if (!user) return;
 
-  const entry = await prisma.journalEntry.findUnique({
+  const entry = await prisma.entry.findUnique({
     where: {
       userId_id: {
         userId: user.id,
@@ -26,7 +26,7 @@ interface Params {
   id: string;
 }
 
-const JournalEditorPage = async ({ params }: { params: Promise<Params> }) => {
+const EntryEditorPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params; // Await the promise
   const entry = await getEntry(resolvedParams.id);
 
@@ -37,4 +37,4 @@ const JournalEditorPage = async ({ params }: { params: Promise<Params> }) => {
   );
 };
 
-export default JournalEditorPage;
+export default EntryEditorPage;

@@ -9,7 +9,7 @@ export const POST = async () => {
 
   if (!user) return;
 
-  const entry = await prisma.journalEntry.create({
+  const entry = await prisma.entry.create({
     data: {
       userId: user.id,
       content: 'Write your content here',
@@ -27,7 +27,7 @@ export const POST = async () => {
     },
   });
 
-  revalidatePath('/journal');
+  revalidatePath('/entry');
 
   return NextResponse.json({ data: entry });
 };

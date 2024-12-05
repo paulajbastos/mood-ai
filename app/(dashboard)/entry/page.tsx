@@ -9,7 +9,7 @@ import Question from '@/components/Question';
 
 const getEntries = async () => {
   const user = await getUserFromClerkID();
-  const data = await prisma.journalEntry.findMany({
+  const data = await prisma.entry.findMany({
     where: {
       userId: user?.id,
     },
@@ -23,7 +23,7 @@ const getEntries = async () => {
   return data;
 };
 
-const JournalPage = async () => {
+const EntryPage = async () => {
   const entries = await getEntries();
 
   return (
@@ -38,7 +38,7 @@ const JournalPage = async () => {
       <div className="">
         {entries.map((entry) => (
           <div key={entry.id} className="mb-[20px]">
-            <Link href={`/journal/${entry.id}`}>
+            <Link href={`/entry/${entry.id}`}>
               <EntryCard entry={entry} />
             </Link>
           </div>
@@ -48,4 +48,4 @@ const JournalPage = async () => {
   );
 };
 
-export default JournalPage;
+export default EntryPage;

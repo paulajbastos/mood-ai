@@ -9,7 +9,7 @@ export const POST = async (request: Request) => {
   const user = await getUserFromClerkID();
   if (!user) return;
 
-  const entries = await prisma.journalEntry.findMany({
+  const entries = await prisma.entry.findMany({
     where: {
       userId: user.id,
     },

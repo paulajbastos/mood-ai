@@ -23,7 +23,7 @@ const createNewUser = async () => {
     });
   }
 
-  redirect('/journal');
+  redirect('/entry');
 };
 
 const NewUser = async () => {

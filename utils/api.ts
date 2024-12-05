@@ -1,10 +1,10 @@
-import { TJournalEntryProps } from '@/types/prisma';
+import { TEntryProps } from '@/types/prisma';
 
 const createURL = (path: string) => window.location.origin + path;
 
 export const newEntry = async () => {
   const res = await fetch(
-    new Request(createURL('/api/journal'), {
+    new Request(createURL('/api/entry'), {
       method: 'POST',
     }),
   );
@@ -16,9 +16,9 @@ export const newEntry = async () => {
   }
 };
 
-export const updateEntry = async (id: string, updates: TJournalEntryProps) => {
+export const updateEntry = async (id: string, updates: TEntryProps) => {
   const res = await fetch(
-    new Request(createURL(`/api/journal/${id}`), {
+    new Request(createURL(`/api/entry/${id}`), {
       method: 'PATCH',
       body: JSON.stringify({ updates }),
     }),
@@ -33,7 +33,7 @@ export const updateEntry = async (id: string, updates: TJournalEntryProps) => {
 
 export const deleteEntry = async (id: string) => {
   const res = await fetch(
-    new Request(createURL(`/api/journal/${id}`), {
+    new Request(createURL(`/api/entry/${id}`), {
       method: 'DELETE',
     }),
   );
