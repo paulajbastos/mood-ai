@@ -5,16 +5,16 @@ import { useAutosave } from 'react-autosave';
 import { useRouter } from 'next/navigation';
 import MDEditor from '@uiw/react-md-editor';
 
-import { updateEntry, deleteEntry } from '@/utils/api';
+import { updateEntry, deleteEntry, unescapeMarkdown } from '@/utils/api';
 
 import { TEntryAnalysisProps, TEntryProps } from '@/types/prisma';
 import Spinner from './Spinner';
 
 const Editor = ({ entry }: TEntryProps) => {
-  const [text, setText] = useState(entry.content);
+  const [text, setText] = useState(unescapeMarkdown(entry.content));
   const [currentEntry, setEntry] = useState<TEntryAnalysisProps>(entry);
   const [isSaving, setIsSaving] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   useAutosave({
     data: text,
@@ -29,12 +29,10 @@ const Editor = ({ entry }: TEntryProps) => {
     },
   });
 
-  // const handleDelete = async () => {
-  //   await deleteEntry(entry.id);
-  //   router.push('/entry');
-  // };
-
-  const typeColorClass = `bg-[${currentEntry.analysis?.color}]`;
+  const handleDelete = async () => {
+    await deleteEntry(entry.id);
+    router.push('/entry');
+  };
 
   return (
     <div className="w-full h-full flex-gap-0 relative">
@@ -56,9 +54,10 @@ const Editor = ({ entry }: TEntryProps) => {
             </li>
             <li className="py-4 px-8 flex items-center justify-between">
               <div className="text-xl font-semibold">Type</div>
-              <div className="flex text-xl">
+              <div className="flex text-xl items-center gap-2">
                 <div
-                  className={`${typeColorClass} w-[16px] h-[16px] rounded-full`}
+                  style={{ background: currentEntry.analysis?.color }}
+                  className="w-[16px] h-[16px] rounded-full"
                 ></div>
                 {currentEntry.analysis?.type}
               </div>
@@ -67,7 +66,7 @@ const Editor = ({ entry }: TEntryProps) => {
               <div className="text-xl font-semibold w-1/3">Subject</div>
               <div className="text-xl">{currentEntry.analysis?.subject}</div>
             </li>
-            {/* <li className="py-4 px-8 flex items-center justify-between">
+            <li className="py-4 px-8 flex items-center justify-between">
               <button
                 onClick={handleDelete}
                 type="button"
@@ -75,10 +74,14 @@ const Editor = ({ entry }: TEntryProps) => {
               >
                 Delete
               </button>
-            </li> */}
+            </li>
           </ul>
         </div>
-        <MDEditor value={text} onChange={setText} className="!h-full" />
+        <MDEditor
+          value={text}
+          onChange={(value) => setText(value || '')}
+          className="!h-full"
+        />
         {/* <MDEditor.Markdown
           source={currentEntry}
           style={{ whiteSpace: 'pre-wrap' }}

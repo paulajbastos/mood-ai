@@ -19,7 +19,7 @@ const Question = () => {
   };
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"
           value={question}

@@ -10,42 +10,45 @@ interface Params {
 
 export const DELETE = async (
   request: Request,
-  { params }: { params: Params },
-) => {
+  { params }: { params: Promise<Params> },
+): Promise<NextResponse> => {
   const user = await getUserFromClerkID();
-  if (!user) return;
+  if (!user)
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
   await prisma.entry.delete({
     where: {
       userId_id: {
-        id: params.id,
+        id: (await params).id,
         userId: user.id,
       },
     },
   });
 
-  return NextResponse.json({ data: { id: params.id } });
+  return NextResponse.json({ data: { id: (await params).id } });
 };
 
 // PATCH is similar to PUT, but the request contains only the data to be updated, not the complete resource.
 export const PATCH = async (
   request: Request,
-  { params }: { params: Params },
-) => {
+  { params }: { params: Promise<Params> },
+): Promise<NextResponse> => {
   const { updates } = await request.json();
   const user = await getUserFromClerkID();
-  if (!user) return;
+  if (!user)
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
   const entry = await prisma.entry.update({
     where: {
       userId_id: {
-        id: params.id,
+        id: (await params).id,
         userId: user?.id,
       },
     },
     data: updates,
   });
 
-  if (!entry) return null;
+  if (!entry)
+    return NextResponse.json({ error: 'Entry not found' }, { status: 404 });
 
   const analysis = await analyze(entry.content);
 

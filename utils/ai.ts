@@ -57,7 +57,7 @@ export const analyze = async (entry: string) => {
 
   try {
     return parser.parse(output.content.toString());
-  } catch {
+  } catch (e) {
     console.log('analyze error', e);
     // const fixParser = OutputFixingParser.fromLLM(
     //   new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' }),
