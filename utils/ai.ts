@@ -10,25 +10,27 @@ import {
 import z from 'zod';
 
 import { TEntryProps } from '@/types/prisma';
+import { unescapeMarkdown } from './api';
+// import { escapeMarkdown, unescapeMarkdown } from './api';
 
 export const parser = StructuredOutputParser.fromZodSchema(
   z.object({
     type: z
       .string()
       .describe(
-        'the type of the content based on activity entry. For example: Css, Typescript, Python, Javascript. If not, try to solve it, do your best!',
+        'the type of the code snippet inside markdown element, if available; If you dont find any markdown, other than that, try figuring out the type somehow. Do your best!',
       ),
     projectName: z
       .string()
       .describe(
-        'the name of the project if there is one on activity entry. If not, it can be n/a',
+        'Look for Project Name to create this value. If does not exist, apply n/a',
       ),
     subject: z.string().describe('the subject of the activity entry.'),
     summary: z.string().describe('quick summary of the entire activity entry.'),
     color: z
       .string()
       .describe(
-        'a hexidecimal color code that represents the type of activity based on github repo-language-color of the repository. Example #3178c6 representing Typescript and #663399 for CSS.',
+        'a hexidecimal color code that represents the type of activity based on github repository language color of the repository. Example #3178c6 representing Typescript and #663399 for CSS. Add all the colors you can find in the github repository language colors classes.',
       ),
   }),
 );
@@ -44,7 +46,7 @@ export const getPrompt = async (content: string) => {
   });
 
   const input = await prompt.format({
-    entry: content,
+    entry: unescapeMarkdown(content),
   });
 
   return input;
@@ -54,7 +56,6 @@ export const analyze = async (entry: string) => {
   const input = await getPrompt(entry);
   const model = new ChatOpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' });
   const output = await model.invoke(input);
-
   try {
     return parser.parse(output.content.toString());
   } catch (e) {

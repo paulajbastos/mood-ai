@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { analyze } from '@/utils/ai';
 import { getUserFromClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
+import { escapeMarkdown } from '@/utils/api';
 
 interface Params {
   id: string;
@@ -50,7 +51,7 @@ export const PATCH = async (
   if (!entry)
     return NextResponse.json({ error: 'Entry not found' }, { status: 404 });
 
-  const analysis = await analyze(entry.content);
+  const analysis = await analyze(escapeMarkdown(entry.content));
 
   const savedAnalysis = await prisma.entryAnalysis.upsert({
     where: {
