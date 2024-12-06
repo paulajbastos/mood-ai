@@ -1,35 +1,17 @@
 'use client';
 
-import { useRef, useState } from 'react';
-// import { useAutosave } from 'react-autosave';
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import MDEditor from '@uiw/react-md-editor';
 
-// import { updateEntry, deleteEntry, unescapeMarkdown } from '@/utils/api';
 import { deleteEntry, unescapeMarkdown } from '@/utils/api';
 
 import { TEntryAnalysisProps, TEntryProps } from '@/types/prisma';
-// import Spinner from './Spinner';
 
-const Editor = ({ entry }: TEntryProps) => {
-  const [text, setText] = useState(unescapeMarkdown(entry.content));
-  // const [currentEntry, setEntry] = useState<TEntryAnalysisProps>(entry);
+const Preview = ({ entry }: TEntryProps) => {
+  const ref = useRef<string>(unescapeMarkdown(entry.content));
   const currentEntry = useRef<TEntryAnalysisProps>(entry);
-  // const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
-
-  // useAutosave({
-  //   data: text,
-  //   onSave: async (_text) => {
-  //     if (_text === entry.content) return;
-  //     setIsSaving(true);
-
-  //     const { data } = await updateEntry(entry.id, { content: _text });
-
-  //     setEntry(data);
-  //     setIsSaving(false);
-  //   },
-  // });
 
   const handleDelete = async () => {
     await deleteEntry(entry.id);
@@ -38,15 +20,8 @@ const Editor = ({ entry }: TEntryProps) => {
 
   return (
     <div className="w-full h-full flex-gap-0 relative">
-      <div className="absolute left-0 top-0 p-2">
-        {/* {isSaving ? (
-          <Spinner />
-        ) : (
-          <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>
-        )} */}
-      </div>
       <div className="col-span-4 ">
-        <div className="pb-[40px]">
+        <div className="">
           <ul role="list" className="divide-y divide-gray-200">
             <li className="py-4 px-8 flex items-center justify-between">
               <div className="text-xl font-semibold">Project</div>
@@ -79,16 +54,26 @@ const Editor = ({ entry }: TEntryProps) => {
                 Delete
               </button>
             </li>
+
+            <li className="py-4 px-8 flex items-center justify-between">
+              <button
+                onClick={() => router.push(`/entry/edit/${entry.id}`)}
+                type="button"
+                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              >
+                Edit
+              </button>
+            </li>
           </ul>
         </div>
-        <MDEditor
-          value={text}
-          onChange={(value) => setText(value || '')}
-          className="!h-full"
+
+        <MDEditor.Markdown
+          source={ref.current}
+          style={{ whiteSpace: 'pre-wrap' }}
         />
       </div>
     </div>
   );
 };
 
-export default Editor;
+export default Preview;
